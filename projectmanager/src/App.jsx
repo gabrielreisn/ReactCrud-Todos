@@ -5,28 +5,35 @@ import Projects from './Components/Projects';
 import AddProject from './Components/AddProject';
 import Todos from './Components/Todos';
 
+const defaultProjects = [
+  {
+    id: uuid.v4(),
+    title: 'Business Website',
+    category: 'Web Design',
+  },
+  {
+    id: uuid.v4(),
+    title: 'Social App',
+    category: 'Mobile Development',
+  },
+  {
+    id: uuid.v4(),
+    title: 'Ecommerce Shopping Cart',
+    category: 'Web Development',
+  },
+];
+
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      projects: [],
-      todos: [],
-    };
-
-    this.handleAddProject = this.handleAddProject.bind(this);
-    this.handleDeleteProject = this.handleDeleteProject.bind(this);
-  }
-
-  componentWillMount() {
-    this.getProjects();
-    this.getTodos();
-  }
+  state = {
+    projects: defaultProjects,
+    todos: [],
+  };
 
   componentDidMount() {
     this.getTodos();
   }
 
-  getTodos() {
+  getTodos = () => {
     $.ajax({
       url: 'https://jsonplaceholder.typicode.com/todos',
       dataType: 'json',
@@ -40,42 +47,19 @@ class App extends Component {
         Error(err);
       },
     });
-  }
+  };
 
-  getProjects() {
-    this.setState({
-      projects: [
-        {
-          id: uuid.v4(),
-          title: 'Business Website',
-          category: 'Web Design',
-        },
-        {
-          id: uuid.v4(),
-          title: 'Social App',
-          category: 'Mobile Development',
-        },
-        {
-          id: uuid.v4(),
-          title: 'Ecommerce Shopping Cart',
-          category: 'Web Development',
-        },
-      ],
-    });
-  }
-
-  handleAddProject(project) {
+  handleAddProject = project => {
     const { projects } = this.state;
     projects.push(project);
     this.setState({ projects });
-  }
+  };
 
-  handleDeleteProject(id) {
+  handleDeleteProject = id => {
     const { projects } = this.state;
-    const index = projects.findIndex(x => x.id === id);
-    projects.splice(index, 1);
-    this.setState({ projects });
-  }
+    const filteredProjects = projects.filter(el => el.id !== id);
+    this.setState({ projects: filteredProjects });
+  };
 
   render() {
     const { todos, projects } = this.state;

@@ -1,15 +1,19 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-const ProjectItem = ({ project, onDelete }) => (
-  <li className="Projects">
-    <strong>{project.title}</strong>
-    {`: ${project.category}`}
-    <button type="button" onClick={() => onDelete(project.id)}>
-      X
-    </button>
-  </li>
-);
+const ProjectItem = ({ project, onDelete }) => {
+  const handleDelete = () => onDelete(project.id);
+
+  return (
+    <li className="Projects">
+      <strong>{project.title}</strong>
+      {`: ${project.category}`}
+      <button type="button" onClick={handleDelete}>
+        X
+      </button>
+    </li>
+  );
+};
 
 ProjectItem.defaultProps = {
   project: {},
